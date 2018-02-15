@@ -1,0 +1,22 @@
+{
+  "name": "msis_node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/rohit104/Spring2018_Mayank_NodeJS_interviewPreparation.git"
+  },
+  "author": "Mayank Yadav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/rohit104/Spring2018_Mayank_NodeJS_interviewPreparation/issues"
+  },
+  "homepage": "https://gitlab.com/rohit104/Spring2018_Mayank_NodeJS_interviewPreparation#README",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}

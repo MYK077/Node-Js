@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Help Page</title>
+  </head>
+  <body>
+<!--includeing the header partial  -->
+    {{>header}}
+<!--passing the registerHelper screamIt space argument  -->
+<!--reference the helper by name then a space and pass whatever data you want to pass as an argument  -->
+    <p>{{screamIt message}}</p>
+<!-- this is how we include partial in hbs file -->
+    {{>footer}}
+  <body>
+</html>

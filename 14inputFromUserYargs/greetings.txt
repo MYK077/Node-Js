@@ -1,0 +1,15 @@
+hey whats going on! are you undefinedhey whats going on! are you 25hey whats going on! are you function (){
+  return 25;
+}hey whats going on! are you function (){
+  return 25;
+}hey whats going on! are you function (){
+  return 25;
+}hey whats going on! are you function (){
+  return 25;
+}hey whats going on! are you function (){
+  return 25;
+}hey whats going on! are you function (){
+  return 25;
+}hey whats going on! are you function (){
+  return 25;
+}
