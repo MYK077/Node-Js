@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-
+// Mongoose support callbacks by default but we will be using promises for our codes as
+// they are a lot simpler to chain manage and scale. We need to use the built in Promise library
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/TodoApp');
 

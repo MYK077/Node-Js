@@ -2,9 +2,9 @@
 var express = require('express');
 // body parser will take JSON and converts it into an object and attach it on the req in app.post
 var bodyParser = require('body-parser');
-var mongoose = require('./db/mongoose');
-var {Todo} = require('./models/todo');
-var User = require('./models/user');
+var mongoose   = require('./db/mongoose');
+var {Todo}     = require('./models/todo');
+var User       = require('./models/user');
 
 var app = express();
 
