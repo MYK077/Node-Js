@@ -3,6 +3,7 @@ var mongoose  = require('mongoose');
 var validator = require('validator');
 const jwt     = require('jsonwebtoken');
 const _       = require('lodash');
+const bcrypt  = require('bcryptjs');
 // //creating a user model we need to store the passwords in hashed form for security reasons
 // //its difficult to get the unshashed value from the hashed value as its a one way algorithm
 // // we can hash it but we cant unhash it.
@@ -49,7 +50,6 @@ var UserSchema = new mongoose.Schema({
       }
     }]
 
-
 });
 
 UserSchema.methods.toJSON = function(){
@@ -64,7 +64,6 @@ UserSchema.methods.toJSON = function(){
 UserSchema.methods.generateAuthToken = function(){
    var user   = this;
    var access = 'auth';
-
    var token  = jwt.sign({_id:user._id.toHexString(),access},'abc123').toString();
 
    user.tokens = user.tokens.concat([{access,token}]);
@@ -73,6 +72,45 @@ UserSchema.methods.generateAuthToken = function(){
      return token;
    });
 }
+// .statics is a object like .methods although everything you add on to it turns into a model method rather
+// than an instance methods
+UserSchema.statics.findByToken = function(token){
+  var User = this;
+  var decoded;
+  // if some error occurs in tryblock then code automatically runs the catch block with error and toHexString
+  // carry on with rest of the code
+  try{
+      decoded = jwt.verify(token,'abc123');
+  } catch(e){
+    return new Promise((resolve,reject)=>{
+      reject();
+    });
+  }
+
+  return User.findOne({
+    '_id':decoded._id,
+    'tokens.token':token
+
+  })
+
+}
+// this middle id for hashing the password before saving it
+UserSchema.pre('save',function(next){
+  var user = this;
+
+//isModified is a built in method, if the password is modified the dosomething
+  if(user.isModified('password')){
+        bcrypt.genSalt(10,(err,salt)=>{
+        bcrypt.hash(user.password,salt,(err,hash)=>{
+          user.password = hash;
+          next();
+        });
+      });
+  }else{
+    next();
+  }
+});
+
 var User = mongoose.model('User', UserSchema);
 
 module.exports = {

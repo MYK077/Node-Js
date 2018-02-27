@@ -49,7 +49,6 @@ var UserSchema = new mongoose.Schema({
       }
     }]
 
-
 });
 
 UserSchema.methods.toJSON = function(){
@@ -64,7 +63,6 @@ UserSchema.methods.toJSON = function(){
 UserSchema.methods.generateAuthToken = function(){
    var user   = this;
    var access = 'auth';
-
    var token  = jwt.sign({_id:user._id.toHexString(),access},'abc123').toString();
 
    user.tokens = user.tokens.concat([{access,token}]);
@@ -72,6 +70,28 @@ UserSchema.methods.generateAuthToken = function(){
    return user.save().then(()=>{
      return token;
    });
+}
+// .statics is a object like .methods although everything you add on to it turns into a model method rather
+// than an instance methods
+UserSchema.statics.findByToken = function(token){
+  var User = this;
+  var decoded;
+  // if some error occurs in tryblock then code automatically runs the catch block with error and toHexString
+  // carry on with rest of the code
+  try{
+      decoded = jwt.verify(token,'abc123');
+  } catch(e){
+    return new Promise((resolve,reject)=>{
+      reject();
+    });
+  }
+
+  return User.findOne({
+    '_id':decoded._id,
+    'tokens.token':token
+
+  })
+
 }
 var User = mongoose.model('User', UserSchema);
 

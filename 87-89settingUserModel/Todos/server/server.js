@@ -120,22 +120,16 @@ app.patch('/todos/:id',(req,res)=>{
 // POST request for user model
 app.post("/users",(req,res)=>{
    var body = _.pick(req.body,['username','email','password']);
-   console.log(body);
    var user = new User(body);
-   console.log(user);
    // generateauthtoken: this is an instance method that we use with instaces(user) of Models(User)
   // to generate the authtoken
 
    user.save().then((user)=>{
-     return user.generateAuthToken();
       res.send(user);
-      }).then((token)=>{
-     res.header('x-auth',token).send(user);
    }).catch((e)=>{
      res.status(400).send(e);
    })
 })
-
 
 app.listen(port,()=>{
   console.log("started the port 3000");

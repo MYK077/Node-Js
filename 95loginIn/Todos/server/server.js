@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
+var {authenticate} = require('./middleware/authenticate');
 
 // deploying app to heroku
 const port = process.env.PORT || 3000;
@@ -120,17 +121,42 @@ app.patch('/todos/:id',(req,res)=>{
 // POST request for user model
 app.post("/users",(req,res)=>{
    var body = _.pick(req.body,['username','email','password']);
+   console.log(body);
    var user = new User(body);
-   // generateauthtoken: this is an instance method that we use with instaces(user) of Models(User)
+   console.log(user);
+
+  // generateauthtoken: this is an instance method that we use with instaces(user) of Models(User)
   // to generate the authtoken
 
    user.save().then((user)=>{
+     return user.generateAuthToken();
       res.send(user);
+      }).then((token)=>{
+     res.header('x-auth',token).send(user);
    }).catch((e)=>{
      res.status(400).send(e);
-   })
-})
+   });
+});
 
+
+
+app.get("/users/me",authenticate,(req,res)=>{
+  res.send(req.user);
+});
+
+// POST /users/login{email,password}
+app.post("/users/login",(req,res)=>{
+  var body = _.pick(req.body,['email','password']);
+
+  User.findByCredentials(body.email,body.password).then((user)=>{
+      return user.generateAuthToken().then((token)=>{
+        res.header('x-auth',token).send(user);
+      })
+  }).catch((e)=>{
+      res.status(400).send();
+  })
+
+})
 
 app.listen(port,()=>{
   console.log("started the port 3000");

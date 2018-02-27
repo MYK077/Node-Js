@@ -8,18 +8,6 @@ var validator = require('validator');
 //
 // //Token is an array of objects where each object is a login token
 // //we have added authentication tokens here although we can also use tokens to verify email and reset password
-//
-// {
-//   email: 'myk.vit@gmail.com',
-//   password: 'gdgcvhdgcvakusgccbuschb',
-//   tokens: [{
-//
-//      access: 'auth',
-//
-//     token: 'osubvpsvsinvovnonnhbhjb'
-//
-//   }]
-// }
 
 var User = mongoose.model('User',{
   username: {
